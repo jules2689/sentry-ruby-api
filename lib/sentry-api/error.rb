@@ -33,7 +33,11 @@ module SentryApi
       # @return [String]
       def build_error_message
         parsed_response = @response.parsed_response
-        message = parsed_response.message || parsed_response.error
+        message = if parsed_response != true && parsed_response != false
+          parsed_response.message || parsed_response.error
+        else
+          "Unknown error"
+        end
 
         "Server responded with code #{@response.code}, message: " \
         "#{handle_message(message)}. " \
